@@ -59,6 +59,9 @@ class lidar_recorder:
         self.csv_writer = csv.writer(self.csv_file)
         #csv.writer is a function that will allow us to write to the csv file
 
+        self.scan_counter=0
+        #This tracks how many scans we have received
+        #We will use this to determine when to stop the program
 
     def scan_callback(self, scan_message):
     #This is the callback function for /scan
@@ -73,10 +76,14 @@ class lidar_recorder:
         print(ranges)
 
         # Example: Write the range data to a csv file
-        self.csv_writer.writerow(['scan'] + ranges)
+        if self.scan_counter < 30:
+            #If less than 30 scans have been received, we continue to write to the csv file
+            self.csv_writer.writerow(['scan'] + list(ranges))
         #Write the data to the csv file
         #The first column will be called scan
         #The rest of the columns will be the range data
+            self.scan_counter += 1
+            #Increment the scan counter by 1
 
     
     def scan_filtered_callback(self, scan_filtered_message):
@@ -89,8 +96,10 @@ class lidar_recorder:
         print("Received laser scan data from /scan_filtered:")
         print(ranges)
 
-        self.csv_writer.writerow(['scan_filtered'] + ranges)
-        #Same as above, but for /scan_filtered
+        if self.scan_counter < 30:
+            self.csv_writer.writerow(['scan_filtered'] + list(ranges))
+            self.scan_counter += 1
+            #same as above, but for /scan_filtered
 
     def run(self):
     #This function will run the node until control-c is pressed
