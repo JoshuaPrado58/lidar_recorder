@@ -76,8 +76,9 @@ class lidar_recorder:
         print(ranges)
 
         # Example: Write the range data to a csv file
-        if self.scan_counter < 30:
-            #If less than 30 scans have been received, we continue to write to the csv file
+        if self.scan_counter < 60:
+            #By implementing 60 scans, we get 30 scans from /scan and 30 scans from /scan_filtered
+            #If less than 60 scans have been received, we continue to write to the csv file
             self.csv_writer.writerow(['scan'] + list(ranges))
         #Write the data to the csv file
         #The first column will be called scan
