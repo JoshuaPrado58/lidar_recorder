@@ -20,6 +20,14 @@ import csv
 import signal
 #Signal will allow us to use control-c to stop the program
 
+import matplotlib.pyplot as plt
+#Matplotlib is a library that allows us to plot data
+
+import numpy as np
+#Numpy is a library that allows us to do math with arrays
+
+import datetime
+
 #We will create a class called Lidar_Recorder
 class lidar_recorder:
     #Class is a blueprint for an object, in this case, Lidar_Recorder
@@ -52,9 +60,8 @@ class lidar_recorder:
         #String is the message type
         #queue_size is the max number of messages that can be stored in que
 
-        self.csv_file = open('lidar_data.csv', 'w')
-        #Open a csv file called lidar_data.csv
-        #w means that we will write to the file
+        self.csv_file = self.get_csv_file()
+        #self.get_csv_file() is a function that will return a csv file
 
         self.csv_writer = csv.writer(self.csv_file)
         #csv.writer is a function that will allow us to write to the csv file
@@ -62,6 +69,16 @@ class lidar_recorder:
         self.scan_counter=0
         #This tracks how many scans we have received
         #We will use this to determine when to stop the program
+
+    def get_csv_file(self):
+        #We are going to make sure the file is identifable by date and time
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        #This will return the current date and time in the format YYYY-MM-DD-HH-MM-SS
+        filename= f"lidar_data_{timestamp}.csv"
+        #The f before the string allows us to use variables in the string
+        #Variables such as timestamp
+        csv_file = open(filename, 'w')
+        return csv_file
 
     def scan_callback(self, scan_message):
     #This is the callback function for /scan
