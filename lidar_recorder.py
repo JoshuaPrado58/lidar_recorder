@@ -119,10 +119,27 @@ class lidar_recorder:
             self.scan_counter += 1
             #same as above, but for /scan_filtered
 
-    def run(self):
+
+    def generate_scatter_plot(self):
+        #This function will generate a scatter plot of the data
+        plt.scatter(range(len(self.scan_data)), self.scan_data, label='Scan')
+        #plt.scatter is a function that will generate a scatter plot
+        #range(len(self.scan_data)) will generate a list of numbers from 0 to the length of the scan data
+        #self.scan_data is the data from /scan
+        #label='Scan' will label the data as Scan
+        plt.scatter(range(len(self.scan_filtered_data)), self.scan_filtered_data, label='Scan Filtered')
+        plt.xlabel('Measurement Index')
+        plt.ylabel('Range')
+        plt.legend()
+        plt.show()
+        #This Graph will in essence compare the data from /scan and /scan_filtered
+        #Will most likely need to change this to gather the data within scan and scan_filtered
+
     #This function will run the node until control-c is pressed
         rospy.spin()
 
 if __name__ == '__main__':
     subscriber = lidar_recorder()
     subscriber.run()
+    subscriber.generate_scatter_plot()
+    
