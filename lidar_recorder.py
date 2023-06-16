@@ -142,4 +142,6 @@ if __name__ == '__main__':
     subscriber = lidar_recorder()
     subscriber.run()
     subscriber.generate_scatter_plot()
+
+    #Some changes have been made to the code
     
