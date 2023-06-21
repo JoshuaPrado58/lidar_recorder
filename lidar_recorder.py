@@ -192,7 +192,7 @@ class lidar_recorder:
                
                 while not rospy.is_shutdown():
                 #while not rospy.is_shutdown() means that the loop will run until control-c is pressed
-                    if self.new_scan is not None:
+                    if self.latest_scan_msg is not None:
                     #if self.new_scan is not None means that if a new message has been received
                     # get scan ranges and angle increment from LaserScan message
                         ranges = self.latest_scan_msg.ranges
@@ -216,7 +216,7 @@ class lidar_recorder:
                             return
                             #This breaks the loop if the max number of scans has been reached
                 
-                    if self.new_scan_filtered is not None:
+                    if self.latest_scan_msg is not None:
                         ranges_filtered = self.latest_scan_filtered_msg.ranges
                         angle_increment_filtered = self.latest_scan_filtered_msg.angle_increment
 
