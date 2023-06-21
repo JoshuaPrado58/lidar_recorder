@@ -39,12 +39,13 @@ def plot_scan(ranges, angle_increment):
 
     # angles = []
     # for i in range(n):
-    #     angles.append(angle_increment * i)
+    # angles.append(angle_increment * i)
 
     # create an array of LIDAR angle values corresponding to each range measurement
     thetas_rad = np.array([angle_increment * i for i in range(n)])
     #What this code does is that it creates an array of angles
     #angle increment * i is the angle of the ith measurement
+    #Therefore if there are 10 measurements, the angles will be 0, 0.1, 0.2, 0.3, 0.4, 0.5, etc.
     thetas_deg = np.rad2deg(thetas_rad)
     #This converts the angles from radians to degrees
     
@@ -63,8 +64,8 @@ def plot_scan(ranges, angle_increment):
 
     a2.scatter(x, y, cmap='jet', c=[i for i in range(n)])
     a2.set_aspect("equal")
-    a2.set_xlabel("X (m)")
-    a2.set_ylabel("Y (m)")
+    a2.set_xlabel("X (0.0 Starting Point) (m)")
+    a2.set_ylabel("Y (0.0 Starting Point) (m)")
     a2.grid()
 
     plt.show()
@@ -92,8 +93,8 @@ def plot_scan_filtered(ranges_filtered, angle_increment_filtered):
 
     a2_filtered.scatter(x_filtered, y_filtered, cmap='jet', c=[i for i in range(n_filtered)])
     a2_filtered.set_aspect("equal")
-    a2_filtered.set_xlabel("X (m)")
-    a2_filtered.set_ylabel("Y (m)")
+    a2_filtered.set_xlabel("X (0.0 Starting Point) (m)")
+    a2_filtered.set_ylabel("Y (0.0 Starting Point) (m)")
     a2_filtered.grid()
 
     plt.show()
@@ -232,7 +233,7 @@ class lidar_recorder:
                                 self.new_scan_filtered = False
                                 f_filtered.close()
                                 return
-                            break
+                                
                             
                     rate.sleep()
 
