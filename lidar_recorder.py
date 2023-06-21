@@ -52,13 +52,13 @@ def plot_scan(ranges, angle_increment):
     x = ranges * np.cos(thetas_rad)
     y = ranges * np.sin(thetas_rad)
 
-    f = plt.figure()
+    f = plt.figure(1)
     a1 = plt.subplot(121)  # 121 -> 1 row, 2 columns, index 1
     a2 = plt.subplot(122)  # 122 -> 1 row, 2 columns, index 2
 
     a1.scatter(thetas_deg, ranges, cmap='jet', c=[i for i in range(n)])
     a1.set_xlabel("Scan Angle (degrees)")
-    a1.set_ylabel("Range (m)")
+    a1.set_ylabel("Range of Scan (m)")
     a1.grid()
 
     a2.scatter(x, y, cmap='jet', c=[i for i in range(n)])
@@ -81,13 +81,13 @@ def plot_scan_filtered(ranges_filtered, angle_increment_filtered):
     x_filtered = ranges_filtered * np.cos(thetas_rad_filtered)
     y_filtered = ranges_filtered * np.sin(thetas_rad_filtered)
 
-    f_filtered = plt.figure()
+    f_filtered = plt.figure(2)
     a1_filtered = plt.subplot(121)  # 121 -> 1 row, 2 columns, index 1
     a2_filtered = plt.subplot(122)  # 122 -> 1 row, 2 columns, index 2
 
     a1_filtered.scatter(thetas_deg_filtered, ranges_filtered, cmap='jet', c=[i for i in range(n_filtered)])
-    a1_filtered.set_xlabel("Scan Angle (degrees)")
-    a1_filtered.set_ylabel("Range (m)")
+    a1_filtered.set_xlabel("Filtered Scan Angle (degrees)")
+    a1_filtered.set_ylabel("Filtered Range (m)")
     a1_filtered.grid()
 
     a2_filtered.scatter(x_filtered, y_filtered, cmap='jet', c=[i for i in range(n_filtered)])
@@ -199,24 +199,25 @@ class lidar_recorder:
                         angle_increment= self.latest_scan_msg.angle_increment
                     #self.latest_scan_msg.ranges is a list of the ranges from the LIDAR
                     
-                    if bool_scan_plot:
-                    #if bool_scan_plot is True, then the plot will be displayed
-                        plot_scan(ranges, angle_increment)
+                        if bool_scan_plot:
+                        #if bool scan plot is True, then the plot will be displayed
+                            plot_scan(ranges, angle_increment)
 
                     #Now to write the data to the csv file
-                    if self.new_scan:
-                        csv_writer.writerow(ranges)
-                        #csv_writer.writerow() is a function that writes a row to a csv file
-                        #In this case, it writes the ranges to the csv file
-                        n_scan += 1
-                        #This increments the number of scans that have been received
-                        if n_scan > max_n_scan:
-                            self.new_scan = False
-                            f.close()
-                            return
-                            #This breaks the loop if the max number of scans has been reached
+                        if self.new_scan:
+                            csv_writer.writerow(ranges)
+                                #csv_writer.writerow() is a function that writes a row to a csv file
+                                #In this case, it writes the ranges to the csv file
+                            n_scan += 1
+                                #This increments the number of scans that have been received
+                            if n_scan > max_n_scan:
+                                self.new_scan = False
+                                f.close()
+                                return 
+                                #This breaks the loop if the max number of scans has been reached
                 
-                    if self.latest_scan_msg is not None:
+                    
+                    if self.latest_scan_filtered_msg is not None:
                         ranges_filtered = self.latest_scan_filtered_msg.ranges
                         angle_increment_filtered = self.latest_scan_filtered_msg.angle_increment
 
@@ -231,6 +232,7 @@ class lidar_recorder:
                                 self.new_scan_filtered = False
                                 f_filtered.close()
                                 return
+                            break
                             
                     rate.sleep()
 
