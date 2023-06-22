@@ -76,7 +76,7 @@ def plot_scan(ranges, angle_increment):
 #Now This is the Instance Method portion of the code
 #Instance Methods are functions that are part of a class
 #We will create a class called Lidar_Recorder
-class lidar_recorder:
+class scan_practice:
     #Class is a blueprint for an object, in this case, Lidar_Recorder
     
     def __init__(self):
@@ -144,26 +144,26 @@ class lidar_recorder:
                     # get scan ranges and angle increment from LaserScan message
                         ranges = self.latest_scan_msg.ranges
                         angle_increment= self.latest_scan_msg.angle_increment
-                    #self.latest_scan_msg.ranges is a list of the ranges from the LIDAR
+                        #self.latest_scan_msg.ranges is a list of the ranges from the LIDAR
                     
-                    if bool_scan_plot:
-                    #if bool_scan_plot is True, then the plot will be displayed
-                        plot_scan(ranges, angle_increment)
+                        if bool_scan_plot:
+                        #if bool_scan_plot is True, then the plot will be displayed
+                            plot_scan(ranges, angle_increment)
 
                     #Now to write the data to the csv file
-                    if self.new_scan:
-                        csv_writer.writerow(ranges)
-                        #csv_writer.writerow() is a function that writes a row to a csv file
-                        #In this case, it writes the ranges to the csv file
-                        n_scan += 1
-                        #This increments the number of scans that have been received
-                        if n_scan > max_n_scan:
-                            self.new_scan = False
-                            f.close()
-                            return
+                            if self.new_scan:
+                                csv_writer.writerow(ranges)
+                                #csv_writer.writerow() is a function that writes a row to a csv file
+                                #In this case, it writes the ranges to the csv file
+                                n_scan += 1
+                                 #This increments the number of scans that have been received
+                                if n_scan > max_n_scan:
+                                    self.new_scan = False
+                                    f.close()
+                                    return
                             #This breaks the loop if the max number of scans has been reached
 
                     rate.sleep()
 
 if __name__ == '__main__':
-    lidar_recorder().main()
+    scan_practice().main()
