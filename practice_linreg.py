@@ -21,23 +21,22 @@ import numpy as np
 
 import datetime
 
-def read_csv_file(filename):
-    #This function reads a csv file and returns an array of ranges
-    ranges = []
-    #ranges is an empty array
-    with open(filename, 'r') as file:
+def data_point_cheker(csv_file):
+    with open(csv_file, 'r') as file:
         csv_reader = csv.reader(file)
-        for row in csv_reader:
-            ranges.extend(row)
-    return np.array(ranges)
+        data_points = sum(1 for _ in csv_reader)
+    return data_points
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
+    # Check if the file name is provided as a command-line argument
     if len(sys.argv) < 2:
-        print("Usage: python3 script_name.py file_name.csv")
+        print("Please provide a CSV file name.")
         sys.exit(1)
 
-    file_name = sys.argv[1]
-    ranges = read_csv_file(file_name)
+    # Extract the file name from command-line arguments
+    csv_file = sys.argv[1]
 
-    print(ranges)
+    # Call the function to count data points
+    num_data_points = data_point_cheker(csv_file)
+    print(f"Number of data points: {num_data_points}")
+
