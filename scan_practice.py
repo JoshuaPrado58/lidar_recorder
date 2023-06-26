@@ -40,6 +40,7 @@ def plot_scan(ranges, angle_increment):
 
     # get the number of points in ranges
     n = len(ranges)
+    print (n)
 
     # angles = []
     # for i in range(n):
@@ -49,6 +50,7 @@ def plot_scan(ranges, angle_increment):
     thetas_rad = np.array([angle_increment * i for i in range(n)])
     #What this code does is that it creates an array of angles
     #angle increment * i is the angle of the ith measurement
+    #range(n) is the number of measurements
     thetas_deg = np.rad2deg(thetas_rad)
     #This converts the angles from radians to degrees
     
@@ -56,7 +58,7 @@ def plot_scan(ranges, angle_increment):
     x = ranges * np.cos(thetas_rad)
     y = ranges * np.sin(thetas_rad)
 
-    f = plt.figure()
+    f = plt.figure(1)
     a1 = plt.subplot(121)  # 121 -> 1 row, 2 columns, index 1
     a2 = plt.subplot(122)  # 122 -> 1 row, 2 columns, index 2
 
@@ -70,6 +72,17 @@ def plot_scan(ranges, angle_increment):
     a2.set_xlabel("X (m)")
     a2.set_ylabel("Y (m)")
     a2.grid()
+
+    f2 = plt.figure(2)
+    a3 = f2.add_subplot(111)  # Create a new figure and a single subplot
+
+    # Copy the scatter plot from a2 to a3
+    a3.scatter(x, y, cmap='jet', c=[i for i in range(num_columns)])
+
+    a3.set_aspect("equal")
+    a3.set_xlabel("X (m)")
+    a3.set_ylabel("Y (m)")
+    a3.grid()
 
     plt.show()
 
