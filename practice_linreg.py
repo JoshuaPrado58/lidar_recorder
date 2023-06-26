@@ -89,16 +89,19 @@ def plot_scan(ranges, angle_increment):
     limited_y_2 = y[limited_indices_2]
 
     regressor_1 = lm.LinearRegression()
+    #regressor_1 is a variable that stores the linear regression line
     regressor_1.fit(limited_x_1.reshape(-1, 1), limited_y_1)
+    #regressor_1.fit(limited_x_1.reshape(-1, 1), limited_y_1) is a function that fits the linear regression line
 
     regressor_2 = lm.LinearRegression()
     regressor_2.fit(limited_x_2.reshape(-1, 1), limited_y_2)
 
     # Generate predicted values for the linear regression lines
     predicted_y_1 = regressor_1.predict(limited_x_1.reshape(-1, 1))
+    #regressor_1.predict(limited_x_1.reshape(-1, 1)) is a function that predicts the linear regression line
     predicted_y_2 = regressor_2.predict(limited_x_2.reshape(-1, 1))
 
-    # Plot the scatter plot and linear regression lines
+    # Plot the linear regression lines
 
     a3.plot(limited_x_1, predicted_y_1, color='pink', label='Linear Regression 1')
     a3.plot(limited_x_2, predicted_y_2, color='black', label='Linear Regression 2')
@@ -106,26 +109,56 @@ def plot_scan(ranges, angle_increment):
     # Display linear regression equations
     equation_1 = f"Regression 1: y = {regressor_1.coef_[0]:.2f}x + {regressor_1.intercept_:.2f}"
     equation_2 = f"Regression 2: y = {regressor_2.coef_[0]:.2f}x + {regressor_2.intercept_:.2f}"
-    a3.text(1.0, 0.9, equation_1, transform=a3.transAxes, fontsize=11)
-    a3.text(1.0, 0.85, equation_2, transform=a3.transAxes, fontsize=11)
+    print(f"First linear Regression Line : {equation_1}")
+    print(f"Second linear Regression Line : {equation_2}")
+    
+    a3.text(1.0, 0.9, equation_1, transform=a3.transAxes, fontsize=10)
+    a3.text(1.0, 0.85, equation_2, transform=a3.transAxes, fontsize=10)
+
+
+    # This Part of the Code is making sure we can see the Intersectiion point
+    #This is Due to the fact that the lines are not far enough to intersect
+    # Extracting the slope and intercept of the first regression line
+    
+    #Use the link below to help for better help understanding intersection points
+    #https://www.cuemath.com/geometry/intersection-of-two-lines/
+    slope_1 = regressor_1.coef_[0]
+    #This is the slope of the first regression line
+    #regressor_1.coef_[0] is the slope of the first regression line
+    
+    intercept_1 = regressor_1.intercept_
+    
+    #This is the intercept of the first regression line
+    # Extracting the slope and intercept of the second regression line
+    
+    slope_2 = regressor_2.coef_[0]
+    intercept_2 = regressor_2.intercept_
+
+    # Solving for the intersection point
+    x_intersection = (intercept_2 - intercept_1) / (slope_1 - slope_2)
+    y_intersection = slope_1 * x_intersection + intercept_1
+
+    # Printing the intersection point
+    print("Intersection Point:")
+    print(f"x = {x_intersection:.4f}")
+    print(f"y = {y_intersection:.4f}")
+    
+    a3.scatter(x_intersection, y_intersection, color='red', marker='o', label='Intersection')
+    intersection_text = f"Intersection: ({x_intersection:.4f}, {y_intersection:.4f})"
+    a3.text(1.0, 0.8, intersection_text, transform=a3.transAxes, fontsize=10)
+
+    #In This part of the code I will be finding the angle created 
+    #by the intersection point
+    # Calculating the angle created by the linear regression lines at the point of intersection
+    angle_intersection = np.abs(np.rad2deg(np.arctan2(slope_2 - slope_1, 1 + slope_1 * slope_2)))
+    print(f"Intersection Angle: {angle_intersection:.4f} degrees")
+    # Displaying the angle of the intersection lines
+    intersection_angle_text = f"Intersection Angle: {angle_intersection:.4f} degrees"
+    a3.text(1.0, 0.65, intersection_angle_text, transform=a3.transAxes, fontsize=10)
 
     a3.legend()
-
-    plt.show()
-
-
     
-
-
-
-
-#Notes on Linear Regression
-#Linear Regression is a method of finding the best fit line for a set of data points
-#I need two linear regression lines, all depenent on thetha of dgrees 
-
-#Need a similir scatter plot similar to a2
-#    # Iterate over each row of the ranges array
-    #  for row in ranges:
+    plt.show()
 
 
 #This Portion is where the file will be read, range and angle inrements of object
